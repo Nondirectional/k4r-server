@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: k4r-server
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/k4r_db
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+
+  docker:
+    compose:
+      enabled: true
+      file: compose.yaml
