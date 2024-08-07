@@ -14,15 +14,18 @@ class SignUpPage extends StatefulWidget {
 
 class SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
-  late String _username;
-  late String _password;
+  late String _username = 'abc';
+  late String _password = 'abc';
+  late String _confirmPassword = 'abc';
+  late String _email = '123@163.com';
+
   bool loggedIn = false;
 
   void _submitForm() async {
-    if (_formKey.currentState!.validate()) {
+    // if (_formKey.currentState!.validate()) {
       _formKey.currentState?.save();
       ApiCaller apiCaller = ApiCaller();
-      Response? response = await apiCaller.signin(_username, _password, false);
+      Response? response = await apiCaller.signup("_username", "_password", "_email");
       if (response != null) {
         print(response.data);
         setState(() {
@@ -33,7 +36,7 @@ class SignUpPageState extends State<SignUpPage> {
           GoRouter.of(context).go('/');
         });
       }
-    }
+    // }
   }
 
   @override
@@ -87,24 +90,29 @@ class SignUpPageState extends State<SignUpPage> {
                   padding: const EdgeInsets.symmetric(
                       vertical: 22, horizontal: 16.0),
                   child: TextFormField(
-                    decoration: const InputDecoration(labelText: '确认'),
+                    decoration: const InputDecoration(labelText: '确认密码'),
                     obscureText: true,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return '请再次确认密码';
                       }
+                      if(value != _password){
+                        print(value);
+                        print(_password);
+                        return "两次密码输入不一致";
+                      }
                       return null;
                     },
                     onFieldSubmitted: (value) =>
                         FocusScope.of(context).nextFocus(),
-                    onSaved: (value) => _password = value!,
+                    onSaved: (value) => _confirmPassword = value!,
                   )),
               Padding(
                   padding: const EdgeInsets.symmetric(
                       vertical: 22, horizontal: 16.0),
                   child: TextFormField(
                     decoration: const InputDecoration(labelText: '邮箱'),
-                    obscureText: true,
+                    obscureText: false,
                     validator: (value) {
                       if (value!.isEmpty) {
                         return '请输入邮箱';
@@ -113,7 +121,7 @@ class SignUpPageState extends State<SignUpPage> {
                     },
                     onFieldSubmitted: (value) =>
                         FocusScope.of(context).nextFocus(),
-                    onSaved: (value) => _password = value!,
+                    onSaved: (value) => _email = value!,
                   )),
               Padding(
                 padding: const EdgeInsets.symmetric(

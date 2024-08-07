@@ -17,6 +17,7 @@ class RequestErrorInterceptor extends Interceptor {
                 RemindType.error,
                 "Request fail,message: ${err.response?.data['message']}",
                 const Duration(milliseconds: 1500));
+            print("Request fail,message: ${err.response?.data['message']}");
             break;
           // 其他状态码...
           default:
@@ -25,10 +26,17 @@ class RequestErrorInterceptor extends Interceptor {
                 RemindType.error,
                 "Request fail,message: $err.message",
                 const Duration(milliseconds: 1500));
+            print("Request fail,message: ${err.response?.data['message']}");
         }
         break;
       default:
         // 默认错误处理
+        SnackBarReminder.showSnackBarRemindByScaffoldMessengerState(
+            GlobalKeys.scaffoldMessengerKey,
+            RemindType.error,
+            "Request fail,message: $err.message",
+            const Duration(milliseconds: 1500));
+        print("Request fail,message: ${err.response?.data['message']}");
         break;
     }
 
@@ -60,8 +68,8 @@ class RequestErrorInterceptor extends Interceptor {
           "${result.message}",
           const Duration(milliseconds: 1500));
       handler.reject(DioException(requestOptions: response.requestOptions));
-      return;
+    } else {
+      handler.next(response);
     }
-    handler.next(response);
   }
 }
