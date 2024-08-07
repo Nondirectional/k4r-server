@@ -42,7 +42,7 @@ class RequestErrorInterceptor extends Interceptor {
 
     if (err.response != null) {
       var response = err.response!;
-      Result<String> result = parseResponse(response.data);
+      Result? result = parseResponse(response.data);
       if (result.errorCode != 0) {
         SnackBarReminder.showSnackBarRemindByScaffoldMessengerState(
             GlobalKeys.scaffoldMessengerKey,
@@ -52,14 +52,14 @@ class RequestErrorInterceptor extends Interceptor {
       }
       handler.resolve(err.response!);
     } else {
-      // 继续传递错误
-      // handler.next(err);
+      handler.next(err);
     }
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    Result<String> result = parseResponse(response);
+    Result? result = parseResponse(response);
+
     response.data = result;
     if (result.errorCode != 0) {
       SnackBarReminder.showSnackBarRemindByScaffoldMessengerState(

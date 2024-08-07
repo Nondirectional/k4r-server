@@ -7,7 +7,7 @@ import 'package:k4r_client/component/request_error_interceptor.dart';
 import 'package:k4r_client/component/request_uris.dart';
 
 class ApiCaller {
-  static const String _host = "http://192.168.1.141:8080";
+  static const String _host = "http://localhost:8080";
   static Dio? _instance;
   static final CookieJar _cookieJar = CookieJar();
 
@@ -31,7 +31,14 @@ class ApiCaller {
     return _instance?.post(RequestUris.signup.uri,
         data: {"username": username, "password": password, "email": email});
   }
+
+  Future<Response>? isUsernameExists(String username) {
+    return _instance?.get(RequestUris.is_username_exists.uri,
+        queryParameters: {"username": username});
+  }
+
+  Future<Response>? isEmailExists(String email) {
+    return _instance?.get(RequestUris.is_email_exists.uri,
+        queryParameters: {"email": email});
+  }
 }
-
-
-
