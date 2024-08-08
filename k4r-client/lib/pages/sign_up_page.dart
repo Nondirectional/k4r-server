@@ -5,8 +5,6 @@ import 'package:k4r_client/component/api_caller.dart';
 import 'package:k4r_client/providers/logged_sate_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../component/response_result.dart';
-
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
@@ -17,11 +15,9 @@ class SignUpPage extends StatefulWidget {
 class SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   late String _username;
-  String? _usernameErrorMsg;
+  late String _nickname;
   late String _password;
-  late String _confirmPassword;
   late String _email;
-  String? _emailErrorMsg;
 
   bool loggedIn = false;
 
@@ -29,7 +25,7 @@ class SignUpPageState extends State<SignUpPage> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState?.save();
       ApiCaller apiCaller = ApiCaller();
-      Response? response = await apiCaller.signup(_username, _password, _email);
+      Response? response = await apiCaller.signup(_username,_nickname, _password, _email);
       if (response != null) {
         print(response.data);
         setState(() {
@@ -62,19 +58,32 @@ class SignUpPageState extends State<SignUpPage> {
                 padding:
                     const EdgeInsets.symmetric(vertical: 22, horizontal: 16.0),
                 child: TextFormField(
-                  decoration: InputDecoration(
-                      labelText: '用户名', errorText: _usernameErrorMsg),
+                  decoration: const InputDecoration(labelText: '用户名'),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return '请输入用户名';
                     }
-                    ApiCaller apiCaller = ApiCaller();
-                    Response? result=  await apiCaller.isUsernameExists(value);
                     return null;
                   },
                   onFieldSubmitted: (value) =>
                       FocusScope.of(context).nextFocus(),
                   onChanged: (value) => _username = value,
+                ),
+              ),
+              Padding(
+                padding:
+                const EdgeInsets.symmetric(vertical: 22, horizontal: 16.0),
+                child: TextFormField(
+                  decoration: const InputDecoration(labelText: '昵称'),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return '请输入昵称';
+                    }
+                    return null;
+                  },
+                  onFieldSubmitted: (value) =>
+                      FocusScope.of(context).nextFocus(),
+                  onChanged: (value) => _nickname = value,
                 ),
               ),
               Padding(
@@ -104,15 +113,12 @@ class SignUpPageState extends State<SignUpPage> {
                         return '请再次确认密码';
                       }
                       if (value != _password) {
-                        print(value);
-                        print(_password);
                         return "两次密码输入不一致";
                       }
                       return null;
                     },
                     onFieldSubmitted: (value) =>
                         FocusScope.of(context).nextFocus(),
-                    onChanged: (value) => _confirmPassword = value!,
                   )),
               Padding(
                   padding: const EdgeInsets.symmetric(
@@ -135,16 +141,22 @@ class SignUpPageState extends State<SignUpPage> {
 
                       return null;
                     },
-                    onFieldSubmitted: (value) =>
-                        FocusScope.of(context).nextFocus(),
-                    onChanged: (value) => _email = value!,
+                    onFieldSubmitted: (value) => _submitForm(),
+                    onChanged: (value) => _email = value,
                   )),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 26.0, vertical: 22.0),
+                padding: const EdgeInsets.symmetric(horizontal: 26.0,vertical: 22.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    MaterialButton(
+                      padding: const EdgeInsets.symmetric(horizontal: 36.0),
+                      color: Colors.black38,
+                      onPressed: () {
+                        GoRouter.of(context).go('/sign-in');
+                      },
+                      child: const Text('返回登录'),
+                    ),
                     MaterialButton(
                       padding: const EdgeInsets.symmetric(horizontal: 36.0),
                       color: Colors.black38,

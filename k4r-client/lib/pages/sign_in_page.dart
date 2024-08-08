@@ -77,8 +77,7 @@ class SignInPageState extends State<SignInPage> {
                       }
                       return null;
                     },
-                    onFieldSubmitted: (value) =>
-                        FocusScope.of(context).nextFocus(),
+                    onFieldSubmitted: (value) => _submitForm(),
                     onSaved: (value) => _password = value!,
                   )),
               Padding(

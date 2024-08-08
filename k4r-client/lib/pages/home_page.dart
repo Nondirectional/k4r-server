@@ -96,6 +96,8 @@ class HomePage extends StatelessWidget {
               ),
               onTap: () {
                 // Add your code here to handle the tap event
+                GoRouter.of(context).push('/profile');
+
               },
             ),
             ListTile(

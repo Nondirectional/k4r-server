@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:k4r_client/pages/home_page.dart';
+import 'package:k4r_client/pages/profile_page.dart';
 import 'package:k4r_client/pages/sign_in_page.dart';
 import 'package:k4r_client/pages/sign_up_page.dart';
 import 'package:k4r_client/providers/access_token_provider.dart';
@@ -19,16 +20,23 @@ void main() {
       debugShowCheckedModeBanner: false,
       debugShowMaterialGrid: false,
       scaffoldMessengerKey: GlobalKeys.scaffoldMessengerKey,
+      theme: ThemeData(
+          primaryColor: Colors.white,
+          primaryColorLight: Colors.white,
+          primaryColorDark: Colors.black),
       routerConfig: GoRouter(
           routes: [
             GoRoute(path: "/", builder: (context, state) => const HomePage()),
             GoRoute(
               path: '/sign-in',
-              builder: (context, state) => SignInPage(),
+              builder: (context, state) => const SignInPage(),
             ),
             GoRoute(
                 path: "/sign-up",
                 builder: (context, state) => const SignUpPage()),
+            GoRoute(
+                path: "/profile",
+                builder: (context, state) => const ProfilePage()),
           ],
           redirect: (context, state) {
             final LoggedSateProvider loggedState =

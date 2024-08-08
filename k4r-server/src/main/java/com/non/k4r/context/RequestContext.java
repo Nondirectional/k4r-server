@@ -19,7 +19,7 @@ public class RequestContext {
         ACCESS_TOKEN_BODY_HOLDER.remove();
     }
 
-    public Long getRequestUserId() {
+    public static Long getRequestUserId() {
         return Optional
                 .ofNullable(getAccessTokenBody())
                 .map(AccessTokenBody::getUserId)

@@ -49,6 +49,7 @@ public class AuthenticationService {
 
         Users saveUser = Users.create()
                 .setUsername(dto.getUsername())
+                .setNickname(dto.getNickname())
                 .setPassword(dto.getPassword())
                 .setEmail(dto.getEmail())
                 .saveOpt()

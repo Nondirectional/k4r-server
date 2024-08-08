@@ -29,6 +29,13 @@ public class Users extends Model<Users> implements Serializable {
      */
     @Column(comment = "用户名")
     private String username;
+
+    /**
+     * 昵称
+     */
+    @Column(comment = "昵称")
+    private String nickname;
+
     /**
      * 密码
      */
