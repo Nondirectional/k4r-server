@@ -23,12 +23,11 @@ public class AuthenticationService {
     private AccessTokenManager accessTokenManager;
 
     public String login(String identifier, String password) {
-        Optional<Users> userOptional = MaskManager.execWithoutMask(
-                () -> Users
+        Optional<Users> userOptional = Users
                         .create()
                         .select()
                         .where(USERS.USERNAME.eq(identifier).or(USERS.EMAIL.eq(identifier)))
-                        .oneOpt());
+                        .oneOpt();
         Users user = userOptional.orElseThrow(() -> new CustomException(ErrorCodes.NO_SUCH_ELEMENT, "用户不存在"));
 
         // 固定时长Equals方法，防止计时攻击

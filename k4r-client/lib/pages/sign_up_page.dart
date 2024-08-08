@@ -27,7 +27,6 @@ class SignUpPageState extends State<SignUpPage> {
       ApiCaller apiCaller = ApiCaller();
       Response? response = await apiCaller.signup(_username,_nickname, _password, _email);
       if (response != null) {
-        print(response.data);
         setState(() {
           loggedIn = true;
           LoggedSateProvider loggedSate =
@@ -100,7 +99,7 @@ class SignUpPageState extends State<SignUpPage> {
                     },
                     onFieldSubmitted: (value) =>
                         FocusScope.of(context).nextFocus(),
-                    onChanged: (value) => _password = value!,
+                    onChanged: (value) => _password = value,
                   )),
               Padding(
                   padding: const EdgeInsets.symmetric(
@@ -135,7 +134,7 @@ class SignUpPageState extends State<SignUpPage> {
                         r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
                         caseSensitive: false,
                       );
-                      if (!emailRegExp.hasMatch(value!)) {
+                      if (!emailRegExp.hasMatch(value)) {
                         return '请输入合法邮箱';
                       }
 

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:k4r_client/component/api_caller.dart';
+import 'package:k4r_client/providers/access_token_provider.dart';
 import 'package:k4r_client/providers/logged_sate_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -27,9 +28,12 @@ class SignInPageState extends State<SignInPage> {
         print(response.data);
         setState(() {
           loggedIn = true;
-          LoggedSateProvider loggedSate =
+          AccessTokenProvider accessTokenProvider = Provider.of<AccessTokenProvider>(context, listen: false);
+          accessTokenProvider.accessToken = response.data.data;
+          LoggedSateProvider loggedSateProvider =
           Provider.of<LoggedSateProvider>(context, listen: false);
-          loggedSate.login();
+          loggedSateProvider.login();
+
           GoRouter.of(context).go('/');
         });
       }

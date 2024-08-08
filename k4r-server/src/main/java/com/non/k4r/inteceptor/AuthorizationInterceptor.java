@@ -24,6 +24,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     private final AntPathMatcher matcher = new AntPathMatcher();
 
     private static final String NO_AUTH_URI_PATTERN = "/**/no-auth/**";
+    private static final String STATIC_RESOURCE_URI_PATTERN = "/static/**";
 
     @Resource
     private AccessTokenManager accessTokenManager;
@@ -35,6 +36,8 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 
         // 根据uri判断是否不需要鉴权的请求
         boolean noAuthorizationRequire = matcher.match(NO_AUTH_URI_PATTERN, uri);
+//        noAuthorizationRequire = noAuthorizationRequire|| matcher.match(STATIC_RESOURCE_URI_PATTERN, uri);
+//        noAuthorizationRequire = noAuthorizationRequire || matcher.match("/favicon.ico",uri);
         if (noAuthorizationRequire) {
             // 放行
             return true;

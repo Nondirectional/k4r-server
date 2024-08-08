@@ -8,7 +8,7 @@ import 'package:k4r_client/providers/access_token_provider.dart';
 import 'package:k4r_client/providers/logged_sate_provider.dart';
 import 'package:provider/provider.dart';
 
-import 'key/global_keys.dart';
+import 'global.dart';
 
 void main() {
   runApp(MultiProvider(
@@ -46,6 +46,7 @@ void main() {
               print("current user has not logged,redirect to login page.");
               return '/sign-in';
             }
+            return null;
           }),
     ),
   ));

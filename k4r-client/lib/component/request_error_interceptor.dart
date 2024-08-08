@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:k4r_client/component/response_result.dart';
 import 'package:k4r_client/component/snack_bar_reminder.dart';
-import 'package:k4r_client/key/global_keys.dart';
+import 'package:k4r_client/global.dart';
 
 class RequestErrorInterceptor extends Interceptor {
   @override

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:k4r_client/component/api_caller.dart';
 import 'package:mime/mime.dart';
 import 'package:path/path.dart' as path;
 
@@ -14,13 +15,13 @@ class ProfilePage extends StatefulWidget {
 }
 
 class ProfilePageState extends State<ProfilePage> {
-  File? _image;
-  final _nameController = TextEditingController();
+  File? _image = File("C:/data/files/avatar/42313281719000119.jpg");
+  final _nicknameController = TextEditingController();
   final _emailController = TextEditingController();
 
   Future<void> _pickImage() async {
     final pickedFile =
-    await ImagePicker().pickImage(source: ImageSource.gallery);
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       // 获取文件扩展名
       String extension = path.extension(pickedFile.path).toLowerCase();
@@ -38,7 +39,7 @@ class ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('编辑个人资料'),
+        title: const Text('编辑个人资料'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -54,30 +55,45 @@ class ProfilePageState extends State<ProfilePage> {
                     : null,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextField(
-              controller: _nameController,
-              decoration: InputDecoration(
+              controller: _nicknameController,
+              decoration: const InputDecoration(
                 labelText: '昵称',
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: '邮箱',
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 // 处理保存逻辑
                 Map<String, dynamic> map = {};
-                _nameController.text.isNotEmpty?? map['name'] = _nameController.text;
-                print('昵称: ${_nameController.text}');
-                print('邮箱: ${_emailController.text}');
+                if (_nicknameController.text.isNotEmpty) {
+                  map["nickname"] = _nicknameController.text;
+                }
+                if (_emailController.text.isNotEmpty) {
+                  map["email"] = _emailController.text;
+                }
+                if (_image != null) {
+                  String extension = path.extension(_image!.path).toLowerCase();
+                  String? mimeType = lookupMimeType(extension);
+                  DioMediaType mediaType = DioMediaType.parse(mimeType!);
+                  MultipartFile avatar = await MultipartFile.fromFile(
+                      _image!.path,
+                      filename: path.basename(_image!.path),
+                      contentType: mediaType);
+                  map["avatar"] = avatar;
+                }
+                ApiCaller apiCaller = ApiCaller(context);
+                Response? response = await apiCaller.updateProfile(FormData.fromMap(map));
               },
-              child: Text('保存'),
+              child: const Text('保存'),
             ),
           ],
         ),

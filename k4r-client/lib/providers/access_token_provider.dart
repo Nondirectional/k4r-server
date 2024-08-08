@@ -8,9 +8,11 @@ class AccessTokenProvider extends ChangeNotifier {
 
   set accessToken(String value) {
     _accessToken = value;
+    notifyListeners();
   }
 
   void clear(){
     _accessToken = '';
+    notifyListeners();
   }
 }

@@ -40,7 +40,6 @@ public class Users extends Model<Users> implements Serializable {
      * 密码
      */
     @Column(comment = "密码")
-    @ColumnMask(Masks.PASSWORD)
     private String password;
     /**
      * 电子邮件
